@@ -44,7 +44,7 @@
       <div class="col-md-6">
         <h2>Captured Image</h2>
         <figure class="figure">
-          <img :src="img" class="img-responsive" />
+          <img id="photoTaken" :src="img" class="img-responsive" />
         </figure>
       </div>
     </div>
@@ -79,7 +79,7 @@ export default {
     },
     devices: function () {
       // Once we have a list select the first one
-      const [first, ...tail] = this.devices
+      const [first] = this.devices
       if (first) {
         this.camera = first.deviceId
         this.deviceId = first.deviceId
@@ -88,14 +88,15 @@ export default {
   },
   methods: {
     onCapture () {
+      console.log(this.$refs.webcam)
       this.img = this.$refs.webcam.capture()
       this.isPhotoTaken = !this.isPhotoTaken
     },
     onStarted (stream) {
-      alert('On Started Event:' + stream)
+      console.log('On Started Event', stream)
     },
     onStopped (stream) {
-      alert('On Stopped Event: ' + stream)
+      console.log('On Stopped Event', stream)
     },
     onStop () {
       this.$refs.webcam.stop()
@@ -104,22 +105,22 @@ export default {
       this.$refs.webcam.start()
     },
     onError (error) {
-      alert('On Error Event: ' + error)
+      console.log('On Error Event', error)
     },
     onCameras (cameras) {
       this.devices = cameras
-      alert('On Cameras Event: ' + cameras)
+      console.log('On Cameras Event', cameras)
     },
     onCameraChange (deviceId) {
       this.deviceId = deviceId
       this.camera = deviceId
       this.isPhotoTaken = false
-      alert('On Camera Change Event: ' + deviceId)
+      console.log('On Camera Change Event', deviceId)
     },
     downloadImage () {
-      document.getElementById('debug').innerText(this.count++)
+      document.getElementById('debug').innerHTML = this.count++
       const download = document.getElementById('downloadPhoto')
-      const canvas = document.getElementById('photoTaken').toDataURL('image/jpeg')
+      const canvas = document.getElementById('photoTaken').getAttribute('src')
         .replace('image/jpeg', 'image/octet-stream')
 
       download.setAttribute('href', canvas)
