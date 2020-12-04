@@ -1,13 +1,7 @@
 <template>
   <div class="example-3d">
-    <swiper class="swiper" :options="swiperOption">
-      <swiper-slide>Slide 1</swiper-slide>
-      <swiper-slide>Slide 2</swiper-slide>
-      <swiper-slide>Slide 3</swiper-slide>
-      <swiper-slide>Slide 4</swiper-slide>
-      <swiper-slide>Slide 5</swiper-slide>
-      <swiper-slide>Slide 6</swiper-slide>
-      <swiper-slide>Slide 7</swiper-slide>
+    <swiper class="swiper" :options="swiperOption" @click="eventClick( $event)">
+      <swiper-slide v-for="(image, key) in images" :key="key" :style="{ backgroundImage: 'url(' + image.imageUrl + ')' }"></swiper-slide>
       <div class="swiper-pagination" slot="pagination"></div>
     </swiper>
   </div>
@@ -16,6 +10,7 @@
 <script>
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 import 'swiper/css/swiper.css'
+import { hasClass } from '../util/helpers'
 
 export default {
   name: 'swiper-example-3d-coverflow',
@@ -32,16 +27,54 @@ export default {
         centeredSlides: true,
         slidesPerView: 'auto',
         coverflowEffect: {
-          rotate: 50,
-          stretch: 0,
-          depth: 100,
+          rotate: 0,
+          stretch: -150,
+          depth: 800,
           modifier: 1,
           slideShadows: true
         },
         pagination: {
           el: '.swiper-pagination'
         }
-      }
+      },
+      styleImage: {
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundColor: '#ffffff',
+        backgroundPosition: 'center'
+      },
+      images: [
+        {
+          imageUrl: 'https://picsum.photos/300/300'
+        },
+        {
+          imageUrl: 'https://picsum.photos/300/300'
+        },
+        {
+          imageUrl: 'https://picsum.photos/300/300'
+        },
+        {
+          imageUrl: 'https://picsum.photos/300/300'
+        },
+        {
+          imageUrl: 'https://picsum.photos/300/300'
+        },
+        {
+          imageUrl: 'https://picsum.photos/300/300'
+        },
+        {
+          imageUrl: 'https://picsum.photos/300/300'
+        },
+        {
+          imageUrl: 'https://picsum.photos/300/300'
+        }
+      ]
+
+    }
+  },
+  methods: {
+    eventClick ($event) {
+      console.log(hasClass($event.target, 'swiper-slide-active'))
     }
   }
 }
