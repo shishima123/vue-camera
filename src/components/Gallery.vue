@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-6" style="position: relative">
         <image-cropper v-model="croppa"
                        :width="screenWidth"
                        :height="screenHeight"
@@ -11,6 +11,7 @@
                        :show-loading="true"
                        :loading-size="50"
         ></image-cropper>
+        <img src="../assets/images/square.png" alt="square" style="position: absolute;top: 50%;left: 50%; transform: translate(-50%, -50%);width: 100px">
       </div>
       <button @click="dataUrl = croppa.generateDataUrl('image/jpeg', 0.8)">Output</button>
 

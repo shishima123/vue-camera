@@ -15,7 +15,7 @@
             @cameras="onCameras"
             @camera-change="onCameraChange"
           />
-          <img v-if="isCameraStart" src="https://picsum.photos/50/50" alt="" style="position: absolute;top: 50%;left: 50%">
+          <img v-if="isCameraStart" src="../assets/images/square.png" alt="" style="position: absolute;top: 50%;left: 50%; transform: translate(-50%, -50%); width: 200px;">
         </div>
 
         <div class="row">
