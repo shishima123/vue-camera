@@ -7,6 +7,9 @@ import Croppa from 'vue-croppa'
 
 import 'vue-croppa/dist/vue-croppa.css'
 
+import vuetify from '@/plugins/vuetify'
+import './assets/js/pleaserotate.min' // path to vuetify export
+
 Vue.config.productionTip = false
 Vue.use(Croppa, { componentName: 'image-cropper' })
 
@@ -14,6 +17,7 @@ Vue.use(Croppa, { componentName: 'image-cropper' })
 new Vue({
   el: '#app',
   router,
+  vuetify,
   components: { App },
   template: '<App/>'
 })
