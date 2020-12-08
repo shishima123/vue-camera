@@ -1,23 +1,42 @@
 <template>
-  <div class="example-3d">
-    <swiper class="swiper" :options="swiperOption" @click="eventClick( $event)">
-      <swiper-slide v-for="(image, key) in images" :key="key" :style="{ backgroundImage: 'url(' + image.imageUrl + ')' }"></swiper-slide>
-      <div class="swiper-pagination" slot="pagination"></div>
-    </swiper>
-  </div>
+  <b-col cols="12">
+    <div class="example-3d">
+      <swiper class="swiper" :options="swiperOption" @click="clickSlideItemActive( $event)">
+        <swiper-slide v-for="(image, key) in images" :key="key" :style="{ backgroundImage: 'url(' + image.imageUrl + ')' }"></swiper-slide>
+        <div class="swiper-pagination" slot="pagination"></div>
+      </swiper>
+      <div>
+        <b-modal id="selectModeTypeModal"
+                 title="Choose type"
+                 header-class="border-bottom-0"
+                 body-class="d-flex justify-content-around"
+                 no-close-on-backdrop="true"
+                 centered>
+          <b-button variant="danger" @click="selectTypeMode('Camera')">Camera</b-button>
+          <b-button variant="success"  @click="selectTypeMode('Gallery')">Gallery</b-button>
+        </b-modal>
+      </div>
+    </div>
+    <component :is="currentModeTypeComponent" @destroyComponent="destroyComponent"></component>
+  </b-col>
+
 </template>
 
 <script>
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 import 'swiper/css/swiper.css'
 import { hasClass } from '../util/helpers'
+import Camera from './Camera'
+import Gallery from './Gallery'
 
 export default {
   name: 'swiper-example-3d-coverflow',
   title: '3D Coverflow effect',
   components: {
     Swiper,
-    SwiperSlide
+    SwiperSlide,
+    Camera,
+    Gallery
   },
   data () {
     return {
@@ -68,24 +87,30 @@ export default {
         {
           imageUrl: 'https://picsum.photos/300/300'
         }
-      ]
-
+      ],
+      currentModeTypeComponent: null
     }
   },
   methods: {
-    eventClick ($event) {
-      console.log(hasClass($event.target, 'swiper-slide-active'))
+    clickSlideItemActive ($event) {
+      if (hasClass($event.target, 'swiper-slide-active')) {
+        this.$bvModal.show('selectModeTypeModal')
+      }
+    },
+    selectTypeMode (typeModeComponent) {
+      this.$bvModal.hide('selectModeTypeModal')
+      this.currentModeTypeComponent = typeModeComponent
+    },
+    destroyComponent () {
+      this.currentModeTypeComponent = null
     }
   }
 }
 </script>
 
-<style scoped>
+<style>
   .example-3d {
     width: 100%;
-    height: 400px;
-    padding-top: 50px;
-    padding-bottom: 50px;
   }
   .swiper {
     height: 100%;
