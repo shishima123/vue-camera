@@ -5,11 +5,17 @@ import App from './App'
 import router from './router'
 import Croppa from 'vue-croppa'
 import fullscreen from 'vue-fullscreen'
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
 import 'vue-croppa/dist/vue-croppa.css'
-
-import vuetify from '@/plugins/vuetify'
 import './assets/js/pleaserotate.min'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+// Install BootstrapVue
+Vue.use(BootstrapVue)
+// Optionally install the BootstrapVue icon components plugin
+Vue.use(IconsPlugin)
 Vue.use(fullscreen) // path to vuetify export
 
 Vue.config.productionTip = false
@@ -19,7 +25,6 @@ Vue.use(Croppa, { componentName: 'image-cropper' })
 new Vue({
   el: '#app',
   router,
-  vuetify,
   components: { App },
   template: '<App/>'
 })
