@@ -4,11 +4,13 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Croppa from 'vue-croppa'
+import fullscreen from 'vue-fullscreen'
 
 import 'vue-croppa/dist/vue-croppa.css'
 
 import vuetify from '@/plugins/vuetify'
-import './assets/js/pleaserotate.min' // path to vuetify export
+import './assets/js/pleaserotate.min'
+Vue.use(fullscreen) // path to vuetify export
 
 Vue.config.productionTip = false
 Vue.use(Croppa, { componentName: 'image-cropper' })
