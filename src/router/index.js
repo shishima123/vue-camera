@@ -10,8 +10,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Camera',
-      component: Camera
+      name: 'Slide',
+      component: Slide
     },
     {
       path: '/gallery',
@@ -19,9 +19,9 @@ export default new Router({
       component: Gallery
     },
     {
-      path: '/slide',
-      name: 'Slide',
-      component: Slide
+      path: '/camera',
+      name: 'Camera',
+      component: Camera
     }
   ]
 })

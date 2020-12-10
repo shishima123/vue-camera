@@ -1,40 +1,56 @@
 <template>
   <transition name="custom-modal">
-    <div class="custom-modal-mask">
-      <div class="custom-modal-wrapper">
-        <div class="custom-modal-container">
+    <div>
+      <div class="custom-modal-mask">
+        <div class="custom-modal-wrapper">
+          <div class="custom-modal-container">
 
-          <div class="custom-modal-header">
-            <slot name="header">
-              default header
-            </slot>
-          </div>
+            <div class="custom-modal-header">
+              <slot name="header">
+                <h5 class="modal-title">BootstrapVue</h5>
+              </slot>
+              <button type="button" aria-label="Close" class="close">×</button>
+            </div>
 
-          <div class="custom-modal-body">
-            <slot name="body">
-              default body
-            </slot>
-          </div>
+            <div class="custom-modal-body">
+              <slot name="body">
+                default body
+              </slot>
+            </div>
 
-          <div class="custom-modal-footer">
-            <slot name="footer">
-              <button class="custom-modal-default-button" @click="$emit('close')">
-                Close
-              </button>
-              <button class="custom-modal-default-button" @click="$emit('OK')">
-                OK
-              </button>
-            </slot>
+            <div class="custom-modal-footer">
+              <slot name="footer">
+                <div class="w-100 d-flex justify-content-evenly">
+                  <button class="btn btn-secondary btn-width" @click="$emit('close')">
+                    Close
+                  </button>
+                  <button class="btn btn-primary btn-width" @click="$emit('ok')">
+                    OK
+                  </button>
+                </div>
+              </slot>
+            </div>
           </div>
         </div>
       </div>
+      <loading v-if="isSendAjax"></loading>
     </div>
   </transition>
 </template>
 
 <script>
+import Loading from './Loading'
 export default {
-  name: 'ValidationImageModal'
+  name: 'ValidationImageModal',
+  components: {
+    Loading
+  },
+  props: {
+    isSendAjax: {
+      type: Boolean,
+      default: false
+    }
+  }
 }
 </script>
 
@@ -58,26 +74,38 @@ export default {
 
   .custom-modal-container {
     width: 500px;
+    height: 200px;
     margin: 0px auto;
     padding: 20px 30px;
     background-color: #fff;
     border-radius: 2px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
     transition: all 0.3s ease;
-    font-family: Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
-  .custom-modal-header h3 {
-    margin-top: 0;
-    color: #42b983;
+  .custom-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
   }
 
   .custom-modal-body {
     margin: 20px 0;
   }
 
-  .custom-modal-default-button {
-    float: right;
+  .custom-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-content: center;
+  }
+  .btn-width {
+    width: 120px;
+  }
+  .justify-content-evenly {
+    justify-content: space-evenly;
   }
 
   /*

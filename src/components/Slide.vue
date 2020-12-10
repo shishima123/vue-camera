@@ -19,16 +19,6 @@
       </div>
     </div>
     <component :is="currentModeTypeComponent" @destroyComponent="destroyComponent"></component>
-    <button id="show-modal" @click="showModal = true">Show Modal</button>
-    <validation-image-modal v-if="showModal" @close="showModal = false">
-      <h3 slot="header">custom header</h3>
-      <div slot="body">
-        <p>
-          Validate Image
-        </p>
-      </div>
-
-    </validation-image-modal>
   </b-col>
 
 </template>
@@ -39,7 +29,6 @@ import 'swiper/css/swiper.css'
 import { hasClass } from '../util/helpers'
 import Camera from './Camera'
 import Gallery from './Gallery'
-import ValidationImageModal from './ValidationImageModal'
 
 export default {
   name: 'Slide',
@@ -47,8 +36,7 @@ export default {
     Swiper,
     SwiperSlide,
     Camera,
-    Gallery,
-    ValidationImageModal
+    Gallery
   },
   data () {
     return {
@@ -100,8 +88,7 @@ export default {
           imageUrl: 'https://picsum.photos/300/300'
         }
       ],
-      currentModeTypeComponent: null,
-      showModal: false
+      currentModeTypeComponent: null
     }
   },
   methods: {
@@ -143,7 +130,7 @@ export default {
     background-size: cover;
     color: #2c8dfb;
   }
-  .swiper .swiper-pagination /deep/ .swiper-pagination-bullet.swiper-pagination-bullet-active {
+  .swiper .swiper-pagination .swiper-pagination-bullet.swiper-pagination-bullet-active {
     background-color: #2c8dfb;
   }
 

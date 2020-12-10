@@ -16,7 +16,10 @@
                       @init="handleCroppaInit"
                       @file-choose="handleCroppaFileChoose"
       ></image-cropper>
-      <image-guide :is-show-guild="!isImageTaken" :croppa-has-image="croppaHasImage" image-name="square.png"></image-guide>
+      <image-guide :is-show-guild="!isImageTaken"
+                   :croppa-has-image="croppaHasImage"
+                   image-name="square.png">
+      </image-guide>
     </div>
     <button v-if="$fullscreen.support"
             type="button"
@@ -31,16 +34,19 @@
     <img v-if="isImageTaken" :src="dataUrl"
          :width="screenWidth"
          :height="screenHeight">
-    <div style="position: absolute;top:50%; left:50%; transform: translate(-50%, -50%)" v-if="isSendImage">
-        <button>
-          abc
-        </button>
-    </div>
+
+    <validation-image-modal v-if="showModal"
+                            @close="showModal = false"
+                            @ok="validateImage"
+                            :is-send-ajax="isSendAjax">
+    </validation-image-modal>
   </fullscreen>
 </template>
 
 <script>
 import ImageGuide from './ImageGuide'
+import ValidationImageModal from './ValidationImageModal'
+
 export default {
   name: 'Gallery',
   data () {
@@ -51,7 +57,9 @@ export default {
       dataUrl: '',
       fullscreen: false,
       isImageTaken: false,
-      isSendImage: false
+      isSendImage: false,
+      showModal: false,
+      isSendAjax: false
     }
   },
   computed: {
@@ -64,6 +72,7 @@ export default {
       this.dataUrl = this.croppa.generateDataUrl('image/jpeg', 1)
       this.isImageTaken = true
       this.isSendImage = true
+      this.showModal = true
     },
     uploadCroppedImage () {
       this.croppa.generateBlob((blob) => {
@@ -82,6 +91,19 @@ export default {
     },
     handleCroppaFileChoose () {
       this.fullscreen = true
+    },
+    validateImage () {
+      this.isSendAjax = true
+      this.$http.get('https://api.openweathermap.org/data/2.5/weather?units=metric&APPID=0119a5072fd69f98c6b004bf6d5469fe&q=hue')
+        .then(response => {
+          console.log(response.body)
+          setTimeout(function () {
+            this.isSendAjax = false
+          }.bind(this), 1000)
+        }).catch(error => {
+          console.log(error)
+          this.isSendAjax = false
+        })
     }
   },
   created () {
@@ -89,7 +111,8 @@ export default {
     this.screenHeight = window.screen.height
   },
   components: {
-    ImageGuide
+    ImageGuide,
+    ValidationImageModal
   }
 }
 </script>
