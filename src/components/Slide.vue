@@ -9,15 +9,26 @@
         <b-modal id="selectModeTypeModal"
                  title="Choose type"
                  header-class="border-bottom-0"
-                 body-class="d-flex justify-content-around"
-                 no-close-on-backdrop="true"
-                 centered>
+                 body-class="d-flex justify-content-around py-5"
+                 no-close-on-backdrop
+                 centered
+                 hide-footer>
           <b-button variant="danger" @click="selectTypeMode('Camera')">Camera</b-button>
-          <b-button variant="success"  @click="selectTypeMode('Gallery')">Gallery</b-button>
+          <b-button variant="success" @click="selectTypeMode('Gallery')">Gallery</b-button>
         </b-modal>
       </div>
     </div>
     <component :is="currentModeTypeComponent" @destroyComponent="destroyComponent"></component>
+    <button id="show-modal" @click="showModal = true">Show Modal</button>
+    <validation-image-modal v-if="showModal" @close="showModal = false">
+      <h3 slot="header">custom header</h3>
+      <div slot="body">
+        <p>
+          Validate Image
+        </p>
+      </div>
+
+    </validation-image-modal>
   </b-col>
 
 </template>
@@ -28,15 +39,16 @@ import 'swiper/css/swiper.css'
 import { hasClass } from '../util/helpers'
 import Camera from './Camera'
 import Gallery from './Gallery'
+import ValidationImageModal from './ValidationImageModal'
 
 export default {
-  name: 'swiper-example-3d-coverflow',
-  title: '3D Coverflow effect',
+  name: 'Slide',
   components: {
     Swiper,
     SwiperSlide,
     Camera,
-    Gallery
+    Gallery,
+    ValidationImageModal
   },
   data () {
     return {
@@ -88,7 +100,8 @@ export default {
           imageUrl: 'https://picsum.photos/300/300'
         }
       ],
-      currentModeTypeComponent: null
+      currentModeTypeComponent: null,
+      showModal: false
     }
   },
   methods: {

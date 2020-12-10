@@ -4,7 +4,7 @@
                 :fullscreen.sync="fullscreen"
                 ref="fullscreen"
                 background="#EEE">
-      <div class="border chart-container">
+      <div class="wrapper-container">
         <vue-web-cam v-if="!isPhotoTaken"
           ref="webcam"
           :device-id="deviceId"
@@ -17,10 +17,9 @@
         <figure v-if="isPhotoTaken">
           <img :width="width" :height="height" id="photoTaken" :src="img" class="img-responsive"  alt="img"/>
         </figure>
-        <img v-if="isCameraStart" src="../assets/images/square.png" alt=""
-             style="position: absolute;top: 50%;left: 50%; transform: translate(-50%, -50%); width: 200px;">
+        <image-guide :is-show-guild="isCameraStart" image-name="square.png"></image-guide>
       </div>
-      <button v-if="$fullscreen.support" type="button" class="btn btn-default btn-map-fullscreen btn-exit" @click="toggleFullScreen">
+      <button v-if="$fullscreen.support" type="button" class="btn btn-default btn-map-fullscreen btn-exit-fullscreen" @click="toggleFullScreen">
         Exit
       </button>
       <button type="button" class="btn btn-success btn-map-fullscreen btn-toggle-camera" @click="toggleCamera">Toggle Camera</button>
@@ -30,10 +29,12 @@
 
 <script>
 import { WebCam } from 'vue-web-cam'
+import ImageGuide from './ImageGuide'
 export default {
   name: 'Camera',
   components: {
-    'vue-web-cam': WebCam
+    'vue-web-cam': WebCam,
+    ImageGuide
   },
   data () {
     return {
@@ -48,14 +49,9 @@ export default {
       width: null,
       height: null,
       resolution: {
-        width: 1600,
-        height: 500
+        width: 0,
+        height: 0
       }
-    }
-  },
-  computed: {
-    device: function () {
-      return this.devices.find(n => n.deviceId === this.deviceId)
     }
   },
   watch: {
@@ -75,23 +71,26 @@ export default {
     capture () {
       this.img = this.$refs.webcam.capture()
       this.isPhotoTaken = !this.isPhotoTaken
-    },
-    stop () {
       this.isCameraStart = false
-      this.$refs.webcam.stop()
     },
-    start () {
-      this.autoPlay = true
-      this.isCameraStart = true
-      this.$refs.webcam.start()
-    },
+    // stop () {
+    //   this.isCameraStart = false
+    //   this.$refs.webcam.stop()
+    // },
+    // start () {
+    //   this.autoPlay = true
+    //   this.isCameraStart = true
+    //   this.$refs.webcam.start()
+    // },
     toggleCamera () {
+      this.isPhotoTaken = false
       this.deviceId = this.devices.filter(e => this.deviceId !== e.deviceId)[0].deviceId
     },
     onError (error) {
       console.log('On Error Event', error)
     },
     onCameras (cameras) {
+      this.isCameraStart = true
       this.devices = cameras
     },
     onCameraChange (deviceId) {
@@ -109,7 +108,7 @@ export default {
       this.fullscreen = fullscreen
     }
   },
-  mounted () {
+  created () {
     let ratio = window.devicePixelRatio || 1
     let widthScreen = screen.width * ratio
     let heightScreen = screen.height * ratio
@@ -124,8 +123,10 @@ export default {
       this.width = screen.height
       this.height = screen.width
     }
-    this.fullscreen = true
     console.log(this.resolution)
+  },
+  mounted () {
+    this.fullscreen = true
   }
 }
 </script>
@@ -134,7 +135,7 @@ export default {
   .wrapper {
     position: relative;
   }
-  .wrapper .chart-container {
+  .wrapper .wrapper-container {
     height: 100%;
     width: 100%;
   }
@@ -153,7 +154,7 @@ export default {
     justify-content: center;
     align-items: center;
   }
-  .wrapper.fullscreen .btn-map-fullscreen.btn-exit {
+  .wrapper.fullscreen .btn-map-fullscreen.btn-exit-fullscreen {
     left: 10px;
     top: 10px;
   }
